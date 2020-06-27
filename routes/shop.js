@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 
 // User homepage of shop route
 router.get('/', (req, res, next) => {
-  res.send('<h1>Welcome to the Udemy Node Shop!</h1>');
+  res.sendFile(path.join(__dirname, '../', 'views', 'shop.html'));
 });
 
 module.exports = router;

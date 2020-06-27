@@ -1,5 +1,7 @@
 const path = require('path');
 
+const rootDir = require('./helpers/root_dir');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -18,7 +20,7 @@ app.use(shopRoutes);
 // Error 404
 app.use((req, res, next) => {
   res.status(404);
-  res.sendFile(path.join(__dirname, 'views', '404.html'));
+  res.sendFile(path.join(rootDir, 'views', '404.html'));
 });
 
 // PORT

@@ -6,10 +6,10 @@ const productController = require('../controllers/products');
 
 const router = express.Router();
 
-// /admin/add-product => GET
+// GET add product page.
 router.get('/add-product', productController.getAddProduct);
 
-// /admin/add-product => POST
+// POST new product.
 router.post('/add-product', productController.postAddProduct);
 
 module.exports = router;

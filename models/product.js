@@ -1,11 +1,16 @@
+/**
+ * PRODUCT MODAL
+ */
+
 const fs = require('fs');
 const path = require('path');
 const rootDir = require('../helpers/root_dir');
 
-const p = path.join(rootDir, 'data', 'products.json');
+const productDataPath = path.join(rootDir, 'data', 'products.json');
 
+// Retrieves JSON data of products and converts to object.
 const getProductsFromFile = (callback) => {
-  fs.readFile(p, (err, fileContent) => {
+  fs.readFile(productDataPath, (err, fileContent) => {
     if (err) {
       callback([]);
     } else {
@@ -22,7 +27,7 @@ module.exports = class Product {
   save() {
     getProductsFromFile((products) => {
       products.push(this);
-      fs.writeFile(p, JSON.stringify(products), (err) => {
+      fs.writeFile(productDataPath, JSON.stringify(products), (err) => {
         console.log(err);
       });
     });

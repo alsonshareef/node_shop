@@ -1,8 +1,12 @@
+/**
+ * PRODUCT CONTROLLER METHODS
+ */
+
 const Product = require('../models/product');
 
 // GET page to add a new product to store.
 exports.getAddProduct = (req, res, next) => {
-  res.render('add-product', {
+  res.render('admin/add_product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     formsCSS: true,
@@ -21,7 +25,7 @@ exports.postAddProduct = (req, res, next) => {
 // GET page display current products in store.
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
-    res.render('shop', {
+    res.render('shop/product_list', {
       prods: products,
       pageTitle: 'Shop',
       path: '/',

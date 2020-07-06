@@ -15,6 +15,9 @@ router.get('/products', shopController.getProducts);
 // GET items currently added to shopping cart.
 router.get('/cart', shopController.getCart);
 
+// GET orders page.
+router.get('/orders', shopController.getOrders);
+
 // GET checkout page for purchasing items in shopping cart.
 router.get('/checkout', shopController.getCheckout);
 

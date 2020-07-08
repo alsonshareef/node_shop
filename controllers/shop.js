@@ -29,8 +29,13 @@ exports.getProducts = (req, res, next) => {
 // GET page displaying details of a selected product.
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
-  Product.findProductbyID(productId, (product) => console.log(product));
-  res.redirect('/');
+  Product.findProductbyID(productId, (product) =>
+    res.render('shop/product-detail', {
+      product: product,
+      pageTitle: product.title,
+      path: '/products',
+    })
+  );
 };
 
 // GET shopping cart page.

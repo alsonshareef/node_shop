@@ -12,6 +12,9 @@ router.get('/', shopController.getIndex);
 // GET products page.
 router.get('/products', shopController.getProducts);
 
+// GET product details page.
+router.get('/products/:productId', shopController.getProduct);
+
 // GET items currently added to shopping cart.
 router.get('/cart', shopController.getCart);
 

@@ -15,7 +15,7 @@ exports.getIndex = (req, res, next) => {
   });
 };
 
-// GET page display current products in store.
+// GET page displaying current products in store.
 exports.getProducts = (req, res, next) => {
   Product.fetchAll((products) => {
     res.render('shop/product-list', {
@@ -24,6 +24,13 @@ exports.getProducts = (req, res, next) => {
       path: '/products',
     });
   });
+};
+
+// GET page displaying details of a selected product.
+exports.getProduct = (req, res, next) => {
+  const productId = req.params.productId;
+  Product.findProductbyID(productId, (product) => console.log(product));
+  res.redirect('/');
 };
 
 // GET shopping cart page.

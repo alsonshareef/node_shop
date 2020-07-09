@@ -3,6 +3,7 @@
  */
 
 const Product = require('../models/product');
+const Cart = require('../models/cart');
 
 // GET index page of shop.
 exports.getIndex = (req, res, next) => {
@@ -49,7 +50,9 @@ exports.getCart = (req, res, next) => {
 // POST item to shopping cart.
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  console.log(prodId);
+  Product.findProductbyID(prodId, (product) => {
+    Cart.addProduct(prodId, product.price);
+  });
   res.redirect('/cart');
 };
 

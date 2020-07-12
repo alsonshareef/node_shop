@@ -41,7 +41,7 @@ exports.getProducts = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
   const prodId = req.params.productId;
-  Product.findProductbyID(prodId, (product) => {
+  Product.findProductById(prodId, (product) => {
     if (!product) {
       res.redirect('/');
       console.log('The product you are trying to edit does not exist.');
@@ -65,5 +65,12 @@ exports.postEditProduct = (req, res, next) => {
     req.body.price
   );
   editedProduct.save();
+  res.redirect('/admin/admin-product-list');
+};
+
+// POST delete a product from the store..
+exports.postDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.deleteProductById(prodId);
   res.redirect('/admin/admin-product-list');
 };

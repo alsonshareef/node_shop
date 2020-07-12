@@ -16,6 +16,7 @@ exports.getAddProduct = (req, res, next) => {
 // POST new product to store.
 exports.postAddProduct = (req, res, next) => {
   const product = new Product(
+    null,
     req.body.title,
     req.body.imageURL,
     req.body.description,
@@ -43,7 +44,7 @@ exports.getEditProduct = (req, res, next) => {
   Product.findProductbyID(prodId, (product) => {
     if (!product) {
       res.redirect('/');
-      alert('Product you are trying to edit does not exist.');
+      console.log('The product you are trying to edit does not exist.');
     }
     res.render('admin/edit-product', {
       pageTitle: 'Edit Product',
@@ -56,6 +57,13 @@ exports.getEditProduct = (req, res, next) => {
 
 // POST new product to store.
 exports.postEditProduct = (req, res, next) => {
-  res.redirect('/products');
-  console.log('edited product.');
+  const editedProduct = new Product(
+    req.body.productId,
+    req.body.title,
+    req.body.imageURL,
+    req.body.description,
+    req.body.price
+  );
+  editedProduct.save();
+  res.redirect('/admin/admin-product-list');
 };

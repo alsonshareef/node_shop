@@ -30,7 +30,7 @@ exports.getProducts = (req, res, next) => {
 // GET page displaying details of a selected product.
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
-  Product.findProductbyID(productId, (product) =>
+  Product.findProductById(productId, (product) =>
     res.render('shop/product-detail', {
       product: product,
       pageTitle: product.title,
@@ -50,7 +50,7 @@ exports.getCart = (req, res, next) => {
 // POST item to shopping cart.
 exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findProductbyID(prodId, (product) => {
+  Product.findProductById(prodId, (product) => {
     Cart.addProduct(prodId, product.price);
   });
   res.redirect('/cart');

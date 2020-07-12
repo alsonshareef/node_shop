@@ -8,6 +8,8 @@ const rootDir = require('../helpers/root_dir');
 
 const productDataPath = path.join(rootDir, 'data', 'products.json');
 
+const Cart = require('./cart');
+
 // Retrieves JSON data of products and converts to object.
 const getProductsFromFile = (callback) => {
   fs.readFile(productDataPath, (err, fileContent) => {
@@ -57,10 +59,28 @@ module.exports = class Product {
     getProductsFromFile(callback);
   }
 
-  static findProductbyID(id, callback) {
+  static findProductById(id, callback) {
     getProductsFromFile((products) => {
       const product = products.find((p) => p.id === id);
       callback(product);
+    });
+  }
+
+  static deleteProductById(id) {
+    getProductsFromFile((products) => {
+      // Product to be deleted
+      const product = products.find((product) => product.id === id);
+
+      // New set of products after product was deleted
+      const updatedProducts = products.filter((product) => product.id !== id);
+
+      // Update products json data with new updatedProducts and delete products from cart.
+      fs.writeFile(productDataPath, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
+          Cart.deleteProduct(id, product.price);
+        }
+        console.log(`Error: ${err}`);
+      });
     });
   }
 };

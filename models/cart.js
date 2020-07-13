@@ -9,6 +9,17 @@ const rootDir = require('../helpers/root_dir');
 const productDataPath = path.join(rootDir, 'data', 'cart.json');
 
 module.exports = class Cart {
+  static getCart(callback) {
+    fs.readFile(productDataPath, (err, fileContent) => {
+      const cart = JSON.parse(fileContent);
+      if (err) {
+        callback(null);
+      } else {
+        callback(cart);
+      }
+    });
+  }
+
   static addProduct(id, productPrice) {
     // Fetch previous cart state.
     fs.readFile(productDataPath, (err, fileContent) => {
@@ -54,6 +65,11 @@ module.exports = class Cart {
       const deletedProduct = updatedCart.products.find(
         (product) => product.id === id
       );
+
+      // If deleted product can't be found in cart, exit the function.
+      if (!deletedProduct) {
+        return;
+      }
 
       // Remove product from updatedCart and modify totalPrice accordingly
       updatedCart.products = updatedCart.products.filter(

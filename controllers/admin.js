@@ -22,8 +22,12 @@ exports.postAddProduct = (req, res, next) => {
     req.body.description,
     req.body.price
   );
-  product.save();
-  res.redirect('/products');
+  product
+    .save()
+    .then(() => {
+      res.redirect('/products');
+    })
+    .catch((err) => console.log(err));
 };
 
 // GET admin version of page displaying current products in store.

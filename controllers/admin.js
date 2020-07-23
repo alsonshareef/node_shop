@@ -15,66 +15,88 @@ exports.getAddProduct = (req, res, next) => {
 
 // POST new product to store.
 exports.postAddProduct = (req, res, next) => {
-  const product = new Product(
-    null,
-    req.body.title,
-    req.body.imageURL,
-    req.body.description,
-    req.body.price
-  );
-  product
-    .save()
+  const { title, imageURL, description, price } = req.body;
+  Product.create({
+    title: title,
+    price: price,
+    imageURL: imageURL,
+    description: description,
+  })
     .then(() => {
-      res.redirect('/products');
+      console.log('Product created!');
+      res.redirect('/admin/admin-product-list');
     })
-    .catch((err) => console.log(err));
+    .catch((error) => console.log(error));
 };
 
 // GET admin version of page displaying current products in store.
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render('admin/admin-product-list', {
-      prods: products,
-      pageTitle: 'Admin Products',
-      path: '/admin/admin-product-list',
-    });
-  });
+  Product.findAll()
+    .then((products) => {
+      res.render('admin/admin-product-list', {
+        prods: products,
+        pageTitle: 'Admin Products',
+        path: '/admin/admin-product-list',
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 // GET edit page for products that only admin can access.
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
+  if (!editMode) {
+    res.redirect('/');
+  }
   const prodId = req.params.productId;
-  Product.findProductById(prodId, (product) => {
-    if (!product) {
-      res.redirect('/');
-      console.log('The product you are trying to edit does not exist.');
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: 'admin/edit-product',
-      editing: editMode,
-      product: product,
-    });
-  });
+
+  Product.findByPk(prodId)
+    .then((product) => {
+      if (!product) {
+        res.redirect('/');
+        console.log('The product you are trying to edit does not exist.');
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: 'admin/edit-product',
+        editing: editMode,
+        product: product,
+      });
+    })
+    .then((err) => console.log(err));
 };
 
 // POST new product to store.
 exports.postEditProduct = (req, res, next) => {
-  const editedProduct = new Product(
-    req.body.productId,
-    req.body.title,
-    req.body.imageURL,
-    req.body.description,
-    req.body.price
-  );
-  editedProduct.save();
-  res.redirect('/admin/admin-product-list');
+  const productId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedImageURL = req.body.imageURL;
+  const updatedDescription = req.body.description;
+  const updatedPrice = req.body.price;
+
+  Product.findByPk(productId)
+    .then((product) => {
+      product.title = updatedTitle;
+      product.imageURL = updatedImageURL;
+      product.description = updatedDescription;
+      product.price = updatedPrice;
+      return product.save();
+    })
+    .then((result) => {
+      console.log('Updated product!');
+      res.redirect('/admin/admin-product-list');
+    })
+    .catch((err) => console.log(err));
 };
 
 // POST delete a product from the store..
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteProductById(prodId);
+  Product.findByPk(prodId)
+    .then((product) => {
+      return product.destroy();
+    })
+    .then((result) => console.log('Deleted product'))
+    .catch((err) => console.log(err));
   res.redirect('/admin/admin-product-list');
 };

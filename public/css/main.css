@@ -96,6 +96,14 @@ main {
   text-align: center;
 }
 
+.image {
+  max-height: 20rem;
+}
+
+.image img {
+  height: 100%;
+}
+
 .btn {
   font: inherit;
   border: 1px solid #00695c;

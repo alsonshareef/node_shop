@@ -16,12 +16,14 @@ exports.getAddProduct = (req, res, next) => {
 // POST new product to store.
 exports.postAddProduct = (req, res, next) => {
   const { title, imageURL, description, price } = req.body;
-  Product.create({
-    title: title,
-    price: price,
-    imageURL: imageURL,
-    description: description,
-  })
+  req.user
+    .createProduct({
+      title: title,
+      price: price,
+      imageURL: imageURL,
+      description: description,
+      userId: req.user.id,
+    })
     .then(() => {
       console.log('Product created!');
       res.redirect('/admin/admin-product-list');

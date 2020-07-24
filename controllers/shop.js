@@ -7,10 +7,10 @@ const Cart = require('../models/cart');
 
 // GET index page of shop.
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('shop/index', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Shop',
         path: '/',
       });
@@ -20,10 +20,10 @@ exports.getIndex = (req, res, next) => {
 
 // GET page displaying current products in store.
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(([rows, fieldData]) => {
+  Product.findAll()
+    .then((products) => {
       res.render('shop/product-list', {
-        prods: rows,
+        prods: products,
         pageTitle: 'Products',
         path: '/products',
       });
@@ -34,10 +34,10 @@ exports.getProducts = (req, res, next) => {
 // GET page displaying details of a selected product.
 exports.getProduct = (req, res, next) => {
   const productId = req.params.productId;
-  Product.findProductById(productId)
-    .then(([product]) => {
+  Product.findByPk(productId)
+    .then((product) => {
       res.render('shop/product-detail', {
-        product: product[0],
+        product: product,
         pageTitle: product.title,
         path: '/products',
       });

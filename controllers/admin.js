@@ -33,7 +33,8 @@ exports.postAddProduct = (req, res, next) => {
 
 // GET admin version of page displaying current products in store.
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user
+    .getProducts()
     .then((products) => {
       res.render('admin/admin-product-list', {
         prods: products,
